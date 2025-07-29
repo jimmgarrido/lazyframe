@@ -37,7 +37,7 @@ const Lazyframe = () => {
     },
     src: {
       youtube: (s) =>
-        `https://www.youtube.com/embed/${s.id}/?autoplay=${
+        `https://www.youtube.com/watch?v=${s.id}&autoplay=${
           s.autoplay ? "1" : "0"
         }&${s.query}`,
       youtube_nocookie: (s) =>
