@@ -53,6 +53,7 @@ const Lazyframe = () => {
     response: {
       title: (r) => r.title,
       thumbnail: (r) => r.thumbnail_url,
+      html: (r) => r.html
     },
   };
 
@@ -160,6 +161,7 @@ const Lazyframe = () => {
           _l.settings.thumbnail = url;
           lazyframe.settings.onThumbnailLoad.call(this, url);
         }
+        _l.settings.html = constants.response.html(response);
         build(_l, true);
 
       });
@@ -286,26 +288,29 @@ const Lazyframe = () => {
   }
 
   function getIframe(settings) {
-
-    const docfrag = document.createDocumentFragment();
-    const iframeNode = document.createElement('iframe');
+    // const docfrag = document.createDocumentFragment();
+    // const iframeNode = document.createElement('iframe');
 
     if (settings.vendor) {
       settings.src = constants.src[settings.vendor](settings);
     }
 
-    iframeNode.setAttribute('id', `lazyframe-${settings.id}`);
-    iframeNode.setAttribute('src', settings.src);
-    iframeNode.setAttribute('frameborder', 0);
-    iframeNode.setAttribute('allowfullscreen', '');
+    // iframeNode.setAttribute('id', `lazyframe-${settings.id}`);
+    // iframeNode.setAttribute('src', settings.src);
+    // iframeNode.setAttribute('frameborder', 0);
+    // iframeNode.setAttribute('allowfullscreen', '');
     
-    if (settings.autoplay) {
-      iframeNode.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-    }
+    // if (settings.autoplay) {
+    //   iframeNode.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+    // }
 
-    docfrag.appendChild(iframeNode);
-    return docfrag;
-
+    // docfrag.appendChild(iframeNode);
+    // return docfrag;
+    let wrapper = document.createElement('div');
+    wrapper.insertAdjacentHTML("beforeend", settings.html);
+    let iframe = wrapper.firstChild;
+    iframe.src = iframe.src + "&autoplay=1";
+    return iframe;
   }
 
   return init;
